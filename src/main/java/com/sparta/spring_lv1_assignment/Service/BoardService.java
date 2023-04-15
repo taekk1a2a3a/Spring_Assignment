@@ -4,6 +4,9 @@ import com.sparta.spring_lv1_assignment.Repository.BoardRepository;
 import com.sparta.spring_lv1_assignment.dto.BoardRequestDto;
 import com.sparta.spring_lv1_assignment.dto.BoardResponseDto;
 import com.sparta.spring_lv1_assignment.entity.Board;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -11,9 +14,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+//@Component // bean 으로 등록
+@Service // @Service 에는 @Component 가 포함되어있지만 명확하게 얘는 Service 를 역할을 하는 bean 객체라는걸 협업 환경에서 표현하며 위해
 public class BoardService {
 
-    private final BoardRepository boardRepository = new BoardRepository();
+    private final BoardRepository boardRepository;
+    @Autowired
+    public BoardService(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
+    }
 
     public String createBoard(BoardRequestDto requestDto) {
         // 브라우저에서 받아온 데이터를 저장하기 위해서 Board 객체로 변환

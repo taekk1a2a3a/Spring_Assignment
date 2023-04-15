@@ -3,12 +3,13 @@ package com.sparta.spring_lv1_assignment.Repository;
 import com.sparta.spring_lv1_assignment.dto.BoardRequestDto;
 import com.sparta.spring_lv1_assignment.dto.BoardResponseDto;
 import com.sparta.spring_lv1_assignment.entity.Board;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+@Repository
 public class BoardRepository {
     private static final Map<Long, Board> table = new HashMap<>();
     private static long ID;
