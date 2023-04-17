@@ -5,10 +5,10 @@ import com.sparta.spring_lv1_assignment.dto.BoardRequestDto;
 import com.sparta.spring_lv1_assignment.dto.BoardResponseDto;
 import com.sparta.spring_lv1_assignment.entity.Board;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +32,11 @@ public class BoardService {
 
     //  전체 게시글 목록 조회
     public List<BoardResponseDto> getBoardList() {
-//        return boardRepository.findAll().stream().map(BoardResponseDto::new).collect(Collectors.toList());
-        // 내림차순 정렬하기
-        return boardRepository.findAll(Sort.by(Sort.Direction.DESC,"createdAt")).stream().map(BoardResponseDto::new).collect(Collectors.toList());
-
+            return boardRepository.findAll()
+                    .stream()
+                    .sorted(Comparator.comparing(Board::getCreatedAt).reversed())
+                    .map(BoardResponseDto::new)
+                    .collect(Collectors.toList());
     }
 
     // 선택한 게시글 조회
@@ -81,7 +82,7 @@ public class BoardService {
         );
     }
 
-    // pw 확인 method
+    // 공통 method: pw 확인 method
     private void checkPw(String userPw) {
         boardRepository.findByUserPw(userPw).orElseThrow(
                 () -> new NullPointerException(("비밀번호가 일치하지 않습니다."))

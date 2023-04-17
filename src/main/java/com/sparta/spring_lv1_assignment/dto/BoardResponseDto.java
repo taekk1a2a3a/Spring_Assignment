@@ -29,7 +29,4 @@ public class BoardResponseDto extends Timestamped {
         this.modifiedAt = board.getModifiedAt();
 
     }
-// 이걸 써도 되고 lombok 에서 제공하는 @NoArgsConstructor 를 사용해도 된다. 매개변수가 없는 기본생성자
-//    public BoardResponseDto() {
-//    }
 }
