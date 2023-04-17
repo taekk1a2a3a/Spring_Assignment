@@ -23,14 +23,12 @@ public class BoardService {
     }
 
     public String createBoard(BoardRequestDto requestDto) {
-        // 브라우저에서 받아온 데이터를 저장하기 위해서 Board 객체로 변환
         Board board = new Board(requestDto);
         boardRepository.save(board);
         return "게시글 저장에 성공했습니다.";
     }
 
     public List<BoardResponseDto> getBoardList() {
-        // 테이블에 저장되어있는 모든 게시글을 조회
         return boardRepository.findAll().stream().map(BoardResponseDto::new).collect(Collectors.toList());
 
     }
@@ -44,7 +42,6 @@ public class BoardService {
 
     @Transactional
     public BoardResponseDto updateBoard(Long boardId, BoardRequestDto requestDto) {
-        // 수정하기 위해 받아온 boardId 를 사용하여 해당 board 인스턴스가 존재하는지 확인하고 가져온다.
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new NullPointerException("선택한 게시글이 존재하지 않습니다."));
 
@@ -58,7 +55,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new NullPointerException("선택한 게시글이 존재하지 않습니다."));
 
-        boardRepository.delete(boardId);
+        boardRepository.delete(board); // -> id가 아니라 entity 객체를 넣어줘야한다 spring jpa 에서는
 
         return "게시글 삭제에 성공했습니다.";
     }
