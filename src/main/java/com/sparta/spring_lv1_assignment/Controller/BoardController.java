@@ -44,4 +44,9 @@ public class BoardController {
     public String deleteBoard(@PathVariable Long boardId) {
         return boardService.deleteBoard(boardId);
     }
+
+    @GetMapping("/title/{boardTitle}")
+        public BoardResponseDto getBoardByBoardTitle(@PathVariable String boardTitle) {
+        return boardService.getBoardByBoardTitle(boardTitle);
+    }
 }

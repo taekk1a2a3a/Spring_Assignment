@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
     @Autowired
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
@@ -34,16 +35,14 @@ public class BoardService {
     }
 
     public BoardResponseDto getBoard(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new NullPointerException(("선택한 게시글이 존재하지 않습니다."))
-        );
+        Board board = checkBoard(boardId);
         return new BoardResponseDto(board);
     }
 
+
     @Transactional
     public BoardResponseDto updateBoard(Long boardId, BoardRequestDto requestDto) {
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new NullPointerException("선택한 게시글이 존재하지 않습니다."));
+        Board board = checkBoard(boardId);
 
         board.update(requestDto);
 
@@ -52,11 +51,26 @@ public class BoardService {
     }
 
     public String deleteBoard(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new NullPointerException("선택한 게시글이 존재하지 않습니다."));
+        Board board = checkBoard(boardId);
 
         boardRepository.delete(board); // -> id가 아니라 entity 객체를 넣어줘야한다 spring jpa 에서는
 
         return "게시글 삭제에 성공했습니다.";
+    }
+
+    public BoardResponseDto getBoardByBoardTitle(String boardTitle) {
+        Board board = boardRepository.findByBoardTitle(boardTitle).orElseThrow(
+                () -> new NullPointerException("해당하는 제목의 게시글이 없습니다..")
+        );
+
+        return new BoardResponseDto(board);
+
+    }
+
+    // 공통으로 사용하는 것은 맨 아래나 맨 위에 위치하는게 좋다.
+    private Board checkBoard(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(
+                () -> new NullPointerException(("선택한 게시글이 존재하지 않습니다."))
+        );
     }
 }
