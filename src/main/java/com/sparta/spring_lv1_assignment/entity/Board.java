@@ -20,6 +20,7 @@ public class Board extends Timestamped{ //timestamped
     private String boardContents;
     private String userId;
     private String userPw;
+
     public Board(BoardRequestDto requestDto) {
         this.boardTitle = requestDto.getBoardTitle();
         this.boardContents = requestDto.getBoardContents();

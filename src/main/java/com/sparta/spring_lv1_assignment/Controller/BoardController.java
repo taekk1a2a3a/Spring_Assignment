@@ -13,12 +13,11 @@ import java.util.List;
 public class BoardController {
 
 
-    private final BoardService boardService;  // = new BoardService(); new 객체가 매번 새롭게 만들어지지 않고
-    // bean 에게 맡기기 위해  생성자 주입을 한다. Autowired
-    @Autowired // 이렇게 생성자 하나만 있을 경우에는 생략 가능하다, 스프링 컨테이너에서 관리하는 bean 객체를 여기다 넣어주세요 하고 알려주는 것
-    public BoardController(BoardService boardService){ // -< 이 경우도 component 로 어노테이션을 달아줘야한다.
+    private final BoardService boardService;
+    @Autowired
+    public BoardController(BoardService boardService){
         this.boardService = boardService;
-    } // 이것도 @RequiredArgsConstructor 을 달면 생략 가능하다.
+    }
 
     @PostMapping("/create")
     public String createBoard(@RequestBody BoardRequestDto requestDto) {
