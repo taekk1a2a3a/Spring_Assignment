@@ -1,7 +1,6 @@
 package com.sparta.spring_lv1_assignment.dto;
 
 import com.sparta.spring_lv1_assignment.entity.Board;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

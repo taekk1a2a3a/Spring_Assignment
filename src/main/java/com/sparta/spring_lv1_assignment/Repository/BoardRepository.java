@@ -1,39 +1,43 @@
 package com.sparta.spring_lv1_assignment.Repository;
 
-import com.sparta.spring_lv1_assignment.dto.BoardRequestDto;
-import com.sparta.spring_lv1_assignment.dto.BoardResponseDto;
 import com.sparta.spring_lv1_assignment.entity.Board;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
 @Repository
 public class BoardRepository {
-    private static final Map<Long, Board> table = new HashMap<>();
-    private static long ID;
+    @PersistenceContext
+    EntityManager em; // JPA 에서 Entity 를 관리해주는 것
 
-    public String createBoard(Board board) {
-        //ID 중복을 막기 위해서 ++ID
-        board.setBoardId(++ID); //setter 로
-
-        // 테이블에 생성한 Board 인스턴스를 저장
-        table.put(ID, board);
-        return "게시글 저장에 성공했습니다.";
+    @Transactional // 등록
+    public void save(Board board) {
+        em.persist(board);
     }
 
-    public List<BoardResponseDto> getBoardList() {
-        // 테이블에 저장되어있는 모든 게시글을 조회
-        return table.values().stream().map(BoardResponseDto::new).collect(Collectors.toList());
-
+    @Transactional // 단일 조회
+    public Optional<Board> findById(Long id) {
+        Board board = em.find(Board.class, id);
+        return Optional.ofNullable(board);
     }
 
-    public Board getBoard(Long boardId) {
-        return table.get(boardId);
+    @Transactional //모두 조회
+    public List<Board> findAll() {
+        return em.createQuery("select c from Board c", Board.class).getResultList();
     }
 
-    public void deleteBoard(Long boardId) {
-        table.remove(boardId);
+//    @Transactional //수정
+//    public void update(Board board) {
+//        board.update(requestDto);
+//    }
+
+    @Transactional //삭제
+    public void delete(Long id) {
+        Board board = em.find(Board.class, id);
+        em.remove(board);
     }
 }
