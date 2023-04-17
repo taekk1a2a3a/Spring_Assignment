@@ -40,9 +40,9 @@ public class BoardController {
         return boardService.updateBoard(boardId, userPw, requestDto);
     }
 
-    @DeleteMapping("/delete/{boardId}")
-    public String deleteBoard(@PathVariable Long boardId) {
-        return boardService.deleteBoard(boardId);
+    @DeleteMapping("/delete/{boardId}/{userPw}")
+    public String deleteBoard(@PathVariable Long boardId, @PathVariable String userPw) {
+        return boardService.deleteBoard(boardId, userPw);
     }
 
     @GetMapping("/title/{boardTitle}")

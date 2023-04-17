@@ -56,9 +56,9 @@ public class BoardService {
     }
 
     // 게시글 삭제
-    public String deleteBoard(Long boardId) {
+    public String deleteBoard(Long boardId, String userPw) {
         Board board = checkBoard(boardId);
-
+        checkPw(userPw);
         boardRepository.delete(board);
 
         return "게시글 삭제에 성공했습니다.";
@@ -81,7 +81,7 @@ public class BoardService {
         );
     }
 
-    // pw 찾기 method
+    // pw 확인 method
     private void checkPw(String userPw) {
         boardRepository.findByUserPw(userPw).orElseThrow(
                 () -> new NullPointerException(("비밀번호가 일치하지 않습니다."))
