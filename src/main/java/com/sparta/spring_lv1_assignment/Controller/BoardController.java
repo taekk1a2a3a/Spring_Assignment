@@ -34,9 +34,10 @@ public class BoardController {
         return boardService.getBoard(boardId);
     }
 
-    @PutMapping("/update/{boardId}")
-    public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody BoardRequestDto requestDto) {
-        return boardService.updateBoard(boardId, requestDto);
+    @PutMapping("/update/{boardId}/{userPw}")
+    public BoardResponseDto updateBoard(@PathVariable Long boardId, @PathVariable String userPw, @RequestBody BoardRequestDto requestDto) {
+
+        return boardService.updateBoard(boardId, userPw, requestDto);
     }
 
     @DeleteMapping("/delete/{boardId}")

@@ -46,9 +46,9 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public BoardResponseDto updateBoard(Long boardId, BoardRequestDto requestDto) {
+    public BoardResponseDto updateBoard(Long boardId, String userPw, BoardRequestDto requestDto) {
         Board board = checkBoard(boardId);
-
+        checkPw(userPw);
         board.update(requestDto);
 
         return new BoardResponseDto(board);
@@ -78,6 +78,13 @@ public class BoardService {
     private Board checkBoard(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(
                 () -> new NullPointerException(("선택한 게시글이 존재하지 않습니다."))
+        );
+    }
+
+    // pw 찾기 method
+    private void checkPw(String userPw) {
+        boardRepository.findByUserPw(userPw).orElseThrow(
+                () -> new NullPointerException(("비밀번호가 일치하지 않습니다."))
         );
     }
 }
