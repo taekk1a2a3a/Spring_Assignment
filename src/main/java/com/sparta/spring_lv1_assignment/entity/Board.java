@@ -23,17 +23,17 @@ public class Board extends Timestamped{ //timestamped
     private String userPw;
 
     // 생성자의 이름은 클래스 이름과 동일해야한다. 생성자는 클래스의 인스턴스를 초기화하는 특별한 종류의 메소드 이기 때문이다.
-    public Board(BoardRequestDto requestDto) {
-        this.boardTitle = requestDto.getBoardTitle();
-        this.boardContents = requestDto.getBoardContents();
-        this.userId = requestDto.getUserId();
-        this.userPw = requestDto.getUserPw();
+    public Board(BoardRequestDto.Create createDto) {
+        this.boardTitle = createDto.getBoardTitle();
+        this.boardContents = createDto.getBoardContents();
+        this.userId = createDto.getUserId();
+        this.userPw = createDto.getUserPw();
     }
 
-    // Board 객체의 상태를 변경하는데 사용되며 이 메서드 자체가 새로운 객체를 반환하지 않는다.
-    public void update(BoardRequestDto requestDto) {
-        this.boardTitle = requestDto.getBoardTitle();
-        this.boardContents = requestDto.getBoardContents();
-        this.userId = requestDto.getUserId();
+//     Board 객체의 상태를 변경하는데 사용되며 이 메서드 자체가 새로운 객체를 반환하지 않는다.
+    public void update(BoardRequestDto.Update updateDto) {
+        this.boardTitle = updateDto.getBoardTitle();
+        this.boardContents = updateDto.getBoardContents();
+        this.userId = updateDto.getUserId();
     }
 }

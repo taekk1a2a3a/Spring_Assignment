@@ -15,7 +15,6 @@ public class BoardResponseDto extends Timestamped {
     private String boardTitle;
     private String boardContents;
     private String userId;
-//    private String userPw;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -24,7 +23,6 @@ public class BoardResponseDto extends Timestamped {
         this.boardTitle = board.getBoardTitle();
         this.boardContents = board.getBoardContents();
         this.userId = board.getUserId();
-//        this.userPw = board.getUserPw();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
 

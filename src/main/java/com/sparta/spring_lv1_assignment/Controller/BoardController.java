@@ -25,8 +25,8 @@ public class BoardController {
 
     // 생성 Create
     @PostMapping("/create")
-    public String createBoard(@RequestBody BoardRequestDto requestDto) {
-        return boardService.createBoard(requestDto);
+    public String createBoard(@RequestBody BoardRequestDto.Create createDto) {
+        return boardService.createBoard(createDto);
     }
 
     // 전체 조회 Read
@@ -47,15 +47,14 @@ public class BoardController {
     }
 
     // 수정 Update
-    @PutMapping("/update/{boardId}/{userPw}")
-    public BoardResponseDto updateBoard(@PathVariable Long boardId, @PathVariable String userPw, @RequestBody BoardRequestDto requestDto) {
-
-        return boardService.updateBoard(boardId, userPw, requestDto);
+    @PutMapping("/update")
+    public String updateBoard(@RequestBody BoardRequestDto.Update updateDto) {
+        return boardService.updateBoard(updateDto);
     }
 
     // 삭제 Delete
-    @DeleteMapping("/delete/{boardId}/{userPw}")
-    public String deleteBoard(@PathVariable Long boardId, @PathVariable String userPw) {
-        return boardService.deleteBoard(boardId, userPw);
+    @DeleteMapping("/delete")
+    public String deleteBoard(@RequestBody BoardRequestDto.Delete deleteDto) {
+        return boardService.deleteBoard(deleteDto);
     }
 }

@@ -24,8 +24,8 @@ public class BoardService {
     }
 
     //  게시글 작성
-    public String createBoard(BoardRequestDto requestDto) {
-        Board board = new Board(requestDto);
+    public String createBoard(BoardRequestDto.Create createDto) {
+        Board board = new Board(createDto);
         boardRepository.save(board);
         return "게시글 저장에 성공했습니다.";
     }
@@ -47,19 +47,18 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public BoardResponseDto updateBoard(Long boardId, String userPw, BoardRequestDto requestDto) {
-        Board board = checkBoard(boardId);
-        checkPw(userPw);
-        board.update(requestDto);
-
-        return new BoardResponseDto(board);
-
+    public String updateBoard(BoardRequestDto.Update updateDto) {
+        Board board = checkBoard(updateDto.getBoardId());
+        checkPw(updateDto.getUserPw());
+        board.update(updateDto);
+        return "게시글이 수정되었습니다.";
     }
 
+
     // 게시글 삭제
-    public String deleteBoard(Long boardId, String userPw) {
-        Board board = checkBoard(boardId);
-        checkPw(userPw);
+    public String deleteBoard(BoardRequestDto.Delete deleteDto) {
+        Board board = checkBoard(deleteDto.getBoardId());
+        checkPw(deleteDto.getUserPw());
         boardRepository.delete(board);
 
         return "게시글 삭제에 성공했습니다.";
