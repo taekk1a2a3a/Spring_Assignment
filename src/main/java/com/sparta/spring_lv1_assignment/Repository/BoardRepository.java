@@ -11,5 +11,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> { // <레포
     // 특정 게시글의 제목이나 내용으로 검색하기 위해서 query method 를 사용
 
     Optional<Board> findByBoardTitle(String boardTitle);
-    Optional<Board> findByUserPw(String userPw);
+    Optional<Board> findByBoardIdAndUsername(Long boardId, String username);
 }

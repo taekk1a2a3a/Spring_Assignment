@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class BoardController {
 
     // 생성 Create
     @PostMapping("/create")
-    public String createBoard(@RequestBody BoardRequestDto.Create createDto) {
-        return boardService.createBoard(createDto);
+    public String createBoard(@RequestBody BoardRequestDto.Create createDto, HttpServletRequest request) {
+        return boardService.createBoard(createDto, request);
     }
 
     // 전체 조회 Read
@@ -35,26 +36,26 @@ public class BoardController {
         return boardService.getBoardList();
     }
     // id로 조회 Read
-    @GetMapping("/{boardId}")
+    @GetMapping("/list/{boardId}")
     public BoardResponseDto getBoard(@PathVariable Long boardId)
     {
         return boardService.getBoard(boardId);
     }
     // 제목으로 조회 Read
-    @GetMapping("/title/{boardTitle}")
-    public BoardResponseDto getBoardByBoardTitle(@PathVariable String boardTitle) {
+    @GetMapping("/search") // 제목이 정확히 일치해야 나온다. -> 추후에 검색 기능으로 업그레이드 필요 (키워드로 검색하기)
+    public BoardResponseDto getBoardByBoardTitle(@RequestParam("q") String boardTitle) {
         return boardService.getBoardByBoardTitle(boardTitle);
     }
 
     // 수정 Update
     @PutMapping("/update")
-    public String updateBoard(@RequestBody BoardRequestDto.Update updateDto) {
-        return boardService.updateBoard(updateDto);
+    public String updateBoard(@RequestBody BoardRequestDto.Update updateDto, HttpServletRequest request) {
+        return boardService.updateBoard(updateDto, request);
     }
 
     // 삭제 Delete
     @DeleteMapping("/delete")
-    public String deleteBoard(@RequestBody BoardRequestDto.Delete deleteDto) {
-        return boardService.deleteBoard(deleteDto);
+    public String deleteBoard(@RequestBody BoardRequestDto.Delete deleteDto, HttpServletRequest request) {
+        return boardService.deleteBoard(deleteDto, request);
     }
 }
