@@ -9,7 +9,7 @@ import lombok.Setter;
 public class SignupRequestDto {
     private String username;
     private String password;
-    private String email;
+    private String userEmail;
     private boolean admin = false; // USER
     private String adminToken = ""; //
     private UserRoleEnum role = UserRoleEnum.USER;
