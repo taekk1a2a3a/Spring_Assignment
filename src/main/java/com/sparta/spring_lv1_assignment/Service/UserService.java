@@ -45,9 +45,9 @@ public class UserService {
         User user = new User(signupRequestDto);
         userRepository.save(user);
         // 상태 코드
-        StatusMessageDto statusMessageDto = StatusMessageDto.setSuccess(StatusEnum.OK.getStatusCode(), "사용자 로그인 완료", null);
+        StatusMessageDto statusMessageDto = StatusMessageDto.setSuccess(StatusEnum.OK.getStatusCode(), "사용자 회원가입 완료", null);
         if (user.getRole() == UserRoleEnum.ADMIN){
-            statusMessageDto = StatusMessageDto.setSuccess(StatusEnum.OK.getStatusCode(), "관리자 로그인 완료", null);
+            statusMessageDto = StatusMessageDto.setSuccess(StatusEnum.OK.getStatusCode(), "관리자 회원가입 완료", null);
         }
         return new ResponseEntity(statusMessageDto, HttpStatus.OK);
     }
