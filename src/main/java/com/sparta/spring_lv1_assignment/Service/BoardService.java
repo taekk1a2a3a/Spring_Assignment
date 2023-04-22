@@ -4,11 +4,15 @@ import com.sparta.spring_lv1_assignment.Repository.BoardRepository;
 import com.sparta.spring_lv1_assignment.Repository.UserRepository;
 import com.sparta.spring_lv1_assignment.dto.BoardRequestDto;
 import com.sparta.spring_lv1_assignment.dto.BoardResponseDto;
+import com.sparta.spring_lv1_assignment.dto.StatusMessageDto;
 import com.sparta.spring_lv1_assignment.entity.Board;
+import com.sparta.spring_lv1_assignment.entity.StatusEnum;
 import com.sparta.spring_lv1_assignment.entity.User;
 import com.sparta.spring_lv1_assignment.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +36,10 @@ public class BoardService {
     }
 
     //  게시글 작성
-    public String createBoard(BoardRequestDto.Create createDto, HttpServletRequest request) {
+    public BoardResponseDto createBoard(BoardRequestDto.Create createDto, HttpServletRequest request) {
         User user = checktoken(request);
-        boardRepository.saveAndFlush(new Board(createDto, user));
-        return "게시글을 등록했습니다.";
+//        boardRepository.save(new Board(createDto, user));
+        return new BoardResponseDto(boardRepository.save(new Board(createDto, user)));
     }
 
     //  전체 게시글 목록 조회
@@ -55,23 +59,24 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public String updateBoard(BoardRequestDto.Update updateDto, HttpServletRequest request) {
+    public BoardResponseDto updateBoard(BoardRequestDto.Update updateDto, HttpServletRequest request) {
         User user = checktoken(request);
         Board board = boardRepository.findByBoardIdAndUsername(updateDto.getBoardId(), user.getUsername()).orElseThrow(
                 () -> new NullPointerException("본인의 글만 수정할 수 있습니다.")
         );
         board.update(updateDto, user);
-        return "게시글이 수정되었습니다.";
+        return new BoardResponseDto(board);
     }
 
     // 게시글 삭제
-    public String deleteBoard(BoardRequestDto.Delete deleteDto, HttpServletRequest request) {
+    public ResponseEntity<StatusMessageDto> deleteBoard(BoardRequestDto.Delete deleteDto, HttpServletRequest request) {
         User user = checktoken(request);
         Board board = boardRepository.findByBoardIdAndUsername(deleteDto.getBoardId(), user.getUsername()).orElseThrow(
                 () -> new NullPointerException("본인의 글만 삭제할 수 있습니다.")
         );
         boardRepository.delete(board);
-        return "게시글이 삭제되었습니다.";
+        StatusMessageDto statusMessageDto = StatusMessageDto.setSuccess(StatusEnum.OK.getStatusCode(), "게시글 삭제 완료", null);
+        return new ResponseEntity(statusMessageDto, HttpStatus.OK);
     }
 
     // 게시글 제목으로 조회

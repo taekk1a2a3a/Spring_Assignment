@@ -34,7 +34,7 @@ public class JwtUtil {
     @PostConstruct
     public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
-        key = Keys.hmacShaKeyFor(bytes);
+        key = Keys.hmacShaKeyFor(bytes); //SHA256
     }
 
     // header 토큰을 가져오기

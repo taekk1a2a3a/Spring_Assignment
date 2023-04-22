@@ -20,7 +20,6 @@ public class Board extends Timestamped { //timestamped
     private String boardTitle;
     private String boardContents;
     private String username;
-    private String password;
 
     // 생성자의 이름은 클래스 이름과 동일해야한다. 생성자는 클래스의 인스턴스를 초기화하는 특별한 종류의 메소드 이기 때문이다.
     public Board(BoardRequestDto.Create createDto, User user) {

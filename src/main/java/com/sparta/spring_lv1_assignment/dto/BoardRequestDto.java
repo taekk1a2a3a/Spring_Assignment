@@ -18,7 +18,6 @@ public class BoardRequestDto {
     public static class Create {
         private String boardTitle;
         private String boardContents;
-        private String username;
     }
 
     @Getter
