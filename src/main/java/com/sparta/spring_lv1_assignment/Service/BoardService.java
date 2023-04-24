@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -38,7 +39,6 @@ public class BoardService {
     //  게시글 작성
     public BoardResponseDto createBoard(BoardRequestDto.Create createDto, HttpServletRequest request) {
         User user = checktoken(request);
-//        boardRepository.save(new Board(createDto, user));
         return new BoardResponseDto(boardRepository.save(new Board(createDto, user)));
     }
 
@@ -62,7 +62,7 @@ public class BoardService {
     public BoardResponseDto updateBoard(BoardRequestDto.Update updateDto, HttpServletRequest request) {
         User user = checktoken(request);
         Board board = boardRepository.findByBoardIdAndUsername(updateDto.getBoardId(), user.getUsername()).orElseThrow(
-                () -> new NullPointerException("본인의 글만 수정할 수 있습니다.")
+                () -> new NoSuchElementException("본인의 글만 수정할 수 있습니다.")
         );
         board.update(updateDto, user);
         return new BoardResponseDto(board);
@@ -72,7 +72,7 @@ public class BoardService {
     public ResponseEntity<StatusMessageDto> deleteBoard(BoardRequestDto.Delete deleteDto, HttpServletRequest request) {
         User user = checktoken(request);
         Board board = boardRepository.findByBoardIdAndUsername(deleteDto.getBoardId(), user.getUsername()).orElseThrow(
-                () -> new NullPointerException("본인의 글만 삭제할 수 있습니다.")
+                () -> new NoSuchElementException("본인의 글만 삭제할 수 있습니다.")
         );
         boardRepository.delete(board);
         StatusMessageDto statusMessageDto = StatusMessageDto.setSuccess(StatusEnum.OK.getStatusCode(), "게시글 삭제 완료", null);
